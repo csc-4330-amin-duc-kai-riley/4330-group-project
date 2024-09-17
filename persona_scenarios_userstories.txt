@@ -1,0 +1,7 @@
+I'm throwing up this doc just so that we can add things to the assignment due on the 30th as we think about our project. I know we'll eventually want to put this in a word doc, but this is a nice place to start. -Riley
+
+At least two personas in your software application
+
+At least two scenarios in which your users will be interacting with your software application
+
+At least five user stories describing narratives that summarize your software application

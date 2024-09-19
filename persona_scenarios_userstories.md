@@ -1,10 +1,11 @@
 I'm throwing up this doc just so that we can add things to the assignment due on the 30th as we think about our project. I know we'll eventually want to put this in a word doc, but this is a nice place to start. -Riley
 
-At least two personas in your software application
+**At least two personas in your software application**
 
-At least two scenarios in which your users will be interacting with your software application
+**At least two scenarios in which your users will be interacting with your software application**
 
 Scenario 1:
+---------------------
 Jay the Fashion Icon
 Jay is a college student and rising social media influencer because of his interest in fashion. He frequently uploads pictures of his outfits on Instagram, and although he tags the brands from where he gets his clothes (if they have an account), people still wonder if the item is available for purchase, where to find it on the site, and if they can find it in person. 
 
@@ -14,9 +15,10 @@ Jay’s friend, a software engineer, introduces him to a new website he created 
 
 
 Scenario 2:
+---------------------
 Amy, a fashion influencer, is overwhelmed by questions from her followers about where to buy her outfits and how she styles them. A fashion startup approaches her with an idea for a new platform, “[insert project name]”, where users can upload daily outfit photos and engage in a “Would You Rather” style voting game. The platform also allows influencers like Amy to provide details about where they bought their clothes, give styling tips, and interact with followers through comments and reactions. Excited by the idea, Amy agrees to collaborate, seeing it as the perfect solution for sharing her outfits and engaging with her audience in an organized way.
 
 After gathering Amy’s requirements, they design and implement a user-friendly platform with voting features, shopping links, and social interactions. Through testing and feedback from Amy and other influencers, the platform is refined and eventually launched. Amy can now easily upload her daily outfits, respond to her fans, and participate in fun engagement features like leaderboards and achievements.
-At least five user stories describing narratives that summarize your software application
 
-test
+
+**At least five user stories describing narratives that summarize your software application**

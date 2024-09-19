@@ -1,8 +1,9 @@
-I'm throwing up this doc just so that we can add things to the assignment due on the 30th as we think about our project. I know we'll eventually want to put this in a word doc, but this is a nice place to start. -Riley
+# Personas, Scenarios, and User Stories
 
-**At least two personas in your software application**
 
-**At least two scenarios in which your users will be interacting with your software application**
+## At least two personas in your software application
+
+## At least two scenarios in which your users will be interacting with your software application
 
 Scenario 1:
 ---------------------
@@ -21,4 +22,4 @@ Amy, a fashion influencer, is overwhelmed by questions from her followers about 
 After gathering Amy’s requirements, they design and implement a user-friendly platform with voting features, shopping links, and social interactions. Through testing and feedback from Amy and other influencers, the platform is refined and eventually launched. Amy can now easily upload her daily outfits, respond to her fans, and participate in fun engagement features like leaderboards and achievements.
 
 
-**At least five user stories describing narratives that summarize your software application**
+## At least five user stories describing narratives that summarize your software application

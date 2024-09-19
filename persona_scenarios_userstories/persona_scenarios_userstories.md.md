@@ -7,7 +7,7 @@
 
 ### Scenario 1:
 ---------------------
-Jay the Fashion Icon
+Jay the Fashion Icon  
 Jay is a college student and rising social media influencer because of his interest in fashion. He frequently uploads pictures of his outfits on Instagram, and although he tags the brands from where he gets his clothes (if they have an account), people still wonder if the item is available for purchase, where to find it on the site, and if they can find it in person. 
 
 Additionally, a lot of Jay’s friends ask him for advice on their outfits and recommendations on where to get their clothes. Doing this through current existing social media begins to get messy, as his messages are filled with spam, compliments, and advice requests from his friends. 

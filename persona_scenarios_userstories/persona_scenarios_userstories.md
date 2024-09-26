@@ -38,13 +38,13 @@ After gathering Amy’s requirements, they design and implement a user-friendly 
 
 ## At least five user stories describing narratives that summarize your software application
 ---------------------
-1.As a user, I want to upload a daily photo of my outfit so that I can share it with others and participate in the daily “Would You Rather” voting game and receive feedback from other users.
+1.As a user, I want to be able to upload a photo of my outfit daily so that I can share it with others and participate in the daily “Would You Rather” voting game and receive feedback from other users.
 
-2.As a user I want to vote, comment, and react to outfits so that I can actively engage with the app’s community to help decide the best looks of the day and give feedback to other users.
+2.As a user I want to be able to vote, comment, and react to outfits so that I can actively engage with the app’s community to help decide the best looks of the day and give feedback to other users.
 
-3.As a user, I want to add descriptions and references about all the clothing items in my outfit so that others can easily find the same or similar items, and I also want to be able to see where others may have gotten their clothes so that I am able to easily find items I like for myself as well.
+3.As a user, I want to be able to add descriptions and references about all the clothing items in my outfit so that others can easily find the same or similar items, and I also want to be able to see where others may have gotten their clothes so that I am able to easily find items I like for myself as well.
 
-4.As a user, I want to receive feedback and styling advice based on my uploaded outfit pictures so that I can see new trends in fashion and see other peoples’ different perspectives.
+4.As a user, I want to be able to receive feedback and styling advice based on my uploaded outfit pictures so that I can see new trends in fashion and see other peoples’ different perspectives.
 
 5.As a user, I need to be able to set my account to private or public so that I can control who is able to see my profile’s content.
 

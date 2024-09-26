@@ -5,8 +5,7 @@ Here's where you can put your submissions for the class assignment due on the 30
 
 
 
-
-At least five functional requirements:
+5 functional requirements:
 
 1) Uploading photos.
 -Users should be able to upload a png. or jpg. file from their computer of mobile device (mobile functionality permitting)
@@ -26,7 +25,7 @@ At least five functional requirements:
 
 
 
-At least five non-functional requirements:
+5 non-functional requirements:
 
 1. The app’s scalability has to be able to support a certain amount of users at the same time(depending on the size of users on the platform) without performance degradation regardless of platform size.
 

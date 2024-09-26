@@ -3,6 +3,12 @@
 
 ## At least two personas in your software application
 
+### Persona 1
+---------------------
+Robert, age 22, is a fashion design student in LA and works with his peers to explore new ideas and seed new trends in his area. Growing up he was enamored with the high fashion trends that would permeate through the 00s and 10s and grew invested in where these trends are heading into the coming decades and where he can leave his mark on the industry. In his formative years he grew accustomed with applications like Snapchat and Instagram where he often would make collections of selfies featuring his most vibrant and artistic outfits. 
+
+Robert has broad interests in fashion scenes both domestic and foreign, but sharing findings with his peers is vital to his success. He believes that an app centered around exclusively sharing fashion tastes and outfits would be quite useful to find inspiration now that he's working to become a professional fashion designer.
+
 ## At least two scenarios in which your users will be interacting with your software application
 
 ### Scenario 1:

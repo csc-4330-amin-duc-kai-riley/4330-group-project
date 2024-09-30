@@ -5,20 +5,20 @@ JORTS, which stands for "Join Others, Rate Today's Styles," is an online fashion
 
 ## 5 functional requirements:
 
-1) Uploading photos.
--Users should be able to upload a png. or jpg. file from their computer of mobile device (mobile functionality permitting)
+1. Users should be able to upload a png. or jpg. file from their computer or mobile device (mobile functionality permitting).
+a. Stretch goal: Have users be required to take a picture before being given access to view other posts
+b. Stretch goal: Allow mobile users to take a photo and have the photo uploaded into the app instantly (without searching for existing png./jpeg.)
 
-2) Ability to add details and captions attached to uploaded photos.
--General descripton of the outfit or individual articles of clothing highlighting details like: store of purchase, price, manufacturer, size, fit style.
+2. Users should be able to add a caption and general description of the outfit or individual articles of clothing highlighting details like: store of purchase, price, manufacturer, size, fit style.
 
-3) Ability to comment on another users post
--Users should be able to comment publicly under another users post and have that comment remain on the post until the commenter or poster removes it.
+3. Users should be able to comment publicly under another user's post and have that comment remain on the post until the commenter or poster removes it.
 
-4) Inclusion of a tag system to allow users to categorize their own posts.
--Users should be able to tag their posts and their post will then be added to that tag category which can be viewed to see all posts under that tag. If a tag written by a user does not currently exist then the tag will be created and their post will become the first post on the tag.
+4. Users should be able to tag their posts and their post will then be added to that tag category which can be viewed to see all posts under that tag. If a tag written by a user does not currently exist then the tag will be created and their post will become the first post on the tag.
 
-5) Allow user posts to be private or public.
--Users should be able to make their posts public or private to only be viewed by other whitelisted users. The publicity of posts should be able to be modified after post creation.
+5. Users should be able to make their posts public or private to only be viewed by other whitelisted users. The publicity of posts should be able to be modified after post creation.
+
+6. Users have to post their own OOTD (outfit of the day) before being able to interact with other users' posts.
+
 
 
 ## 5 non-functional requirements:

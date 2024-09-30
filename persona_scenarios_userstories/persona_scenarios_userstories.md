@@ -1,4 +1,4 @@
-Group Members: Duc, Riley, Amin, Kai
+# Group Members: Duc, Riley, Amin, Kai
 
 # Personas, Scenarios, and User Stories
 

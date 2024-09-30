@@ -3,7 +3,7 @@
 JORTS, which stands for "Join Others, Rate Today's Styles," is an online fashion app with social aspects where users can post daily photos of their outfits and also play an interactive game with the app’s community. Taking inspiration from the popular game "Would You Rather" and the mobile app “BeReal”, users vote on and compare the outfits of 2 users who posted on that day, with the option to add comments, feedback, and styling tips.
 
 
-## 5 functional requirements:
+## 6 functional requirements:
 
 1. Users should be able to upload a png. or jpg. file from their computer or mobile device (mobile functionality permitting).
 a. Stretch goal: Have users be required to take a picture before being given access to view other posts

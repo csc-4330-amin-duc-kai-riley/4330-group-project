@@ -1,6 +1,6 @@
 # Group Members: Duc, Riley, Amin, Kai
 
-JORTS, which stands for "Join Others, Rate Today's Styles," is an online fashion app with social aspects where users can post daily photos of their outfits and also participate in an interactive game with the app’s community. Taking inspiration from the popular game "Would You Rather" and the mobile app “BeReal”, users vote on and compare each other's outfits, with the ability to add comments, reactions, and styling tips. Users can also add information about the products used in their outfits, including brand names, price tags, item names, and places of purchase. JORTS provides a fun and interactive community that is perfect for anyone interested in fashion or wishing to get started.
+JORTS, which stands for "Join Others, Rate Today's Styles," is an online fashion app with social aspects where users can post daily photos of their outfits and also play an interactive game with the app’s community. Taking inspiration from the popular game "Would You Rather" and the mobile app “BeReal”, users vote on and compare the outfits of 2 users who posted on that day, with the option to add comments, feedback, and styling tips.
 
 
 ## Personas, Scenarios, and User Stories

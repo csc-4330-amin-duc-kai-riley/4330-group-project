@@ -1,11 +1,6 @@
-Here's where you can put your submissions for the class assignment due on the 30th. -Riley
+# Group Members: Duc, Riley, Amin, Kai
 
-(for the use case diagram you can probably just upload it as a seperate file. It'd be a good idea to move this file and the diagram into a folder in future.)
-
-
-
-
-5 functional requirements:
+## 5 functional requirements:
 
 1) Uploading photos.
 -Users should be able to upload a png. or jpg. file from their computer of mobile device (mobile functionality permitting)
@@ -23,9 +18,7 @@ Here's where you can put your submissions for the class assignment due on the 30
 -Users should be able to make their posts public or private to only be viewed by other whitelisted users. The publicity of posts should be able to be modified after post creation.
 
 
-
-
-5 non-functional requirements:
+## 5 non-functional requirements:
 
 1. The app’s scalability has to be able to support a certain amount of users at the same time(depending on the size of users on the platform) without performance degradation regardless of platform size.
 

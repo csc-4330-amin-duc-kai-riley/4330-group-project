@@ -35,6 +35,11 @@ function Signup() {
                 </div>
                 <button type="submit">Sign Up</button>
             </form>
+
+            <div style={{ marginTop: '20px' }}>
+                <h3>Already have an account?</h3>
+                <button onClick={() => window.location.href = '/signin'}>Sign In</button>
+            </div>
         </div>
     );
 }

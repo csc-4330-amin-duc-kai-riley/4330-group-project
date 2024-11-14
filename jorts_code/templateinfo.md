@@ -160,7 +160,9 @@ material-dashboard-react
     │   │           ├── index.js
     │   │       ├── vote
     │   │           ├── index.js
-    │   │     
+    │   │           ├── profile
+    │   │           ├── index.js
+    │   │  
     │   ├── App.js
     │   ├── index.js
     │   └── routes.js

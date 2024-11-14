@@ -3,6 +3,7 @@ import SignUp from "layouts/jorts/authentication/sign-up";
 import Vote from "layouts/jorts/vote";
 import Upload from "layouts/jorts/upload";
 import About from "layouts/jorts/about";
+import Profile from "layouts/jorts/profile";
 
 const routes = [
   {
@@ -28,6 +29,14 @@ const routes = [
     icon: <Icon fontSize="small">upload</Icon>,
     route: "/upload",
     component: <Upload />,
+  },
+  {
+    type: "collapse",
+    name: "Profile",
+    key: "profile",
+    icon: <Icon fontSize="small">person</Icon>,
+    route: "/profile",
+    component: <Profile />,
   },
   {
     type: "collapse",

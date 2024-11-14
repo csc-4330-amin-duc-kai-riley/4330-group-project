@@ -151,13 +151,16 @@ material-dashboard-react
     │   │   ├── Tables
     │   │   └── Timeline
     │   ├── layouts
-    │   │   ├── authentication
-    │   │   ├── billing
-    │   │   ├── dashboard
-    │   │   ├── notifications
-    │   │   ├── profile
-    │   │   ├── rtl
-    │   │   └── tables
+    │   │   ├── jorts
+    │   │       ├── about
+    │   │       │   ├── index.js
+    │   │       ├── authentication
+    │   │           ├── index.js
+    │   │       ├── upload
+    │   │           ├── index.js
+    │   │       ├── vote
+    │   │           ├── index.js
+    │   │     
     │   ├── App.js
     │   ├── index.js
     │   └── routes.js

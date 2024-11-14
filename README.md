@@ -2,5 +2,5 @@
 JORTS -- Join Others, Rate Today's Styles
 
 
-![jorts logo](./jorts logo.png)
+![jorts logo](jorts logo.png)
 

@@ -17,7 +17,7 @@ import PropTypes from "prop-types";
 import Grid from "@mui/material/Grid";
 import MDBox from "components/MDBox";
 import PageLayout from "examples/LayoutContainers/PageLayout";
-import Footer from "layouts/authentication/components/Footer";
+import Footer from "layouts/jorts/authentication/components/Footer";
 
 function BasicLayout({ image, children }) {
   return (

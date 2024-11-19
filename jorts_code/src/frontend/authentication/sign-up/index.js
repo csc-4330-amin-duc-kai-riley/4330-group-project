@@ -12,7 +12,7 @@ import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
 
 // Authentication layout components
-import BasicLayout from "layouts/jorts/authentication/components/BasicLayout";
+import BasicLayout from "frontend/authentication/components/BasicLayout";
 
 function SignUp() {
   const [formData, setFormData] = useState({

@@ -1,9 +1,9 @@
 import Icon from "@mui/material/Icon";
-import SignUp from "layouts/jorts/authentication/sign-up";
-import Vote from "layouts/jorts/vote";
-import Upload from "layouts/jorts/upload";
-import About from "layouts/jorts/about";
-import Profile from "layouts/jorts/profile";
+import SignUp from "frontend/authentication/sign-up";
+import Vote from "frontend/vote";
+import Upload from "frontend/upload";
+import About from "frontend/about";
+import Profile from "frontend/profile";
 
 const routes = [
   {

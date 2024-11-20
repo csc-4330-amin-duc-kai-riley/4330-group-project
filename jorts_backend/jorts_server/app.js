@@ -12,7 +12,7 @@ const sessionRoutes = require('./routes/sessions');
 const outfitComparisonRoutes = require('./routes/outfitComparisons');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 
 // Middleware
 app.use(cors());
@@ -36,3 +36,5 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
+
+module.exports = app;

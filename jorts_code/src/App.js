@@ -14,7 +14,7 @@ Coded by www.creative-tim.com
 */
 
 import { useState, useEffect, useMemo } from "react";
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Icon from "@mui/material/Icon";
@@ -29,9 +29,11 @@ import rtlPlugin from "stylis-plugin-rtl";
 import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 import routes from "routes";
+import Landing from "frontend/landing";
+import { AuthProvider, useAuth } from "context/AuthContext";
 import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "context";
 
-export default function App() {
+function AppContent() {
   const [controller, dispatch] = useMaterialUIController();
   const {
     miniSidenav,
@@ -46,13 +48,14 @@ export default function App() {
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const { isAuthenticated, logout } = useAuth();
 
   useMemo(() => {
     const cacheRtl = createCache({
       key: "rtl",
       stylisPlugins: [rtlPlugin],
     });
-
     setRtlCache(cacheRtl);
   }, []);
 
@@ -72,6 +75,11 @@ export default function App() {
 
   const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
 
+  const handleSignOut = () => {
+    logout();
+    navigate("/landing");
+  };
+
   useEffect(() => {
     document.body.setAttribute("dir", direction);
   }, [direction]);
@@ -81,18 +89,21 @@ export default function App() {
     document.scrollingElement.scrollTop = 0;
   }, [pathname]);
 
-  const getRoutes = (allRoutes) =>
-    allRoutes.map((route) => {
-      if (route.collapse) {
-        return getRoutes(route.collapse);
-      }
+  const signOutRoute = {
+    type: "collapse",
+    name: "Sign Out",
+    key: "sign-out",
+    icon: <Icon fontSize="small">logout</Icon>,
+    route: "#",
+    onClick: handleSignOut,
+  };
 
-      if (route.route) {
-        return <Route exact path={route.route} element={route.component} key={route.key} />;
-      }
-
-      return null;
-    });
+  // Filter routes based on authentication status
+  const visibleRoutes = isAuthenticated
+    ? routes
+        .filter((route) => !route.showOnlyBeforeLogin && route.type !== "hidden")
+        .concat([signOutRoute])
+    : routes.filter((route) => route.showOnlyBeforeLogin || route.type === "hidden");
 
   const configsButton = (
     <MDBox
@@ -122,43 +133,63 @@ export default function App() {
     <CacheProvider value={rtlCache}>
       <ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>
         <CssBaseline />
-        <>
-          <Sidenav
-            color={sidenavColor}
-            brandName="JORTS"
-            routes={routes}
-            onMouseEnter={handleOnMouseEnter}
-            onMouseLeave={handleOnMouseLeave}
-          />
-          <Configurator />
-          {configsButton}
-        </>
+        <Sidenav
+          color={sidenavColor}
+          brandName="JORTS"
+          routes={visibleRoutes}
+          onMouseEnter={handleOnMouseEnter}
+          onMouseLeave={handleOnMouseLeave}
+        />
+        {isAuthenticated && (
+          <>
+            <Configurator />
+            {configsButton}
+          </>
+        )}
         <Routes>
-          {getRoutes(routes)}
-          <Route path="/" element={<Navigate to="/about" />} />
-          <Route path="*" element={<Navigate to="/about" />} />
+          <Route path="/landing" element={<Landing />} />
+          {routes.map(
+            (route) =>
+              route.route && <Route key={route.key} path={route.route} element={route.component} />
+          )}
+          <Route path="/" element={<Landing />} />
+          <Route path="*" element={<Navigate to="/landing" />} />
         </Routes>
       </ThemeProvider>
     </CacheProvider>
   ) : (
     <ThemeProvider theme={darkMode ? themeDark : theme}>
       <CssBaseline />
-      <>
-        <Sidenav
-          color={sidenavColor}
-          brandName="JORTS"
-          routes={routes}
-          onMouseEnter={handleOnMouseEnter}
-          onMouseLeave={handleOnMouseLeave}
-        />
-        <Configurator />
-        {configsButton}
-      </>
+      <Sidenav
+        color={sidenavColor}
+        brandName="JORTS"
+        routes={visibleRoutes}
+        onMouseEnter={handleOnMouseEnter}
+        onMouseLeave={handleOnMouseLeave}
+      />
+      {isAuthenticated && (
+        <>
+          <Configurator />
+          {configsButton}
+        </>
+      )}
       <Routes>
-        {getRoutes(routes)}
-        <Route path="/" element={<Navigate to="/about" />} />
-        <Route path="*" element={<Navigate to="/about" />} />
+        <Route path="/landing" element={<Landing />} />
+        {routes.map(
+          (route) =>
+            route.route && <Route key={route.key} path={route.route} element={route.component} />
+        )}
+        <Route path="/" element={<Landing />} />
+        <Route path="*" element={<Navigate to="/landing" />} />
       </Routes>
     </ThemeProvider>
+  );
+}
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 }

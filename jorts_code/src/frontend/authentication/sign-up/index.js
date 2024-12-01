@@ -1,33 +1,47 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-
-// @mui material components
 import Card from "@mui/material/Card";
-import Grid from "@mui/material/Grid";
-
-// Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
-
-// Authentication layout components
+import MDSnackbar from "components/MDSnackbar";
 import BasicLayout from "frontend/authentication/components/BasicLayout";
+import { useAuth } from "context/AuthContext";
 
 function SignUp() {
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     password: "",
+    confirmPassword: "",
   });
+  const [notification, setNotification] = useState({ open: false, message: "", color: "info" });
+  const { register } = useAuth();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+    if (formData.password !== formData.confirmPassword) {
+      setNotification({
+        open: true,
+        message: "Passwords do not match",
+        color: "error",
+      });
+      return;
+    }
+    const result = await register(formData.username, formData.email, formData.password);
+
+    if (!result.success) {
+      setNotification({
+        open: true,
+        message: result.message,
+        color: "error",
+      });
+    }
   };
 
   return (
@@ -35,7 +49,7 @@ function SignUp() {
       <Card>
         <MDBox
           variant="gradient"
-          bgColor="info"
+          bgColor="success"
           borderRadius="lg"
           coloredShadow="success"
           mx={2}
@@ -62,6 +76,7 @@ function SignUp() {
                 fullWidth
                 value={formData.username}
                 onChange={handleChange}
+                required
               />
             </MDBox>
             <MDBox mb={2}>
@@ -73,6 +88,7 @@ function SignUp() {
                 fullWidth
                 value={formData.email}
                 onChange={handleChange}
+                required
               />
             </MDBox>
             <MDBox mb={2}>
@@ -84,10 +100,23 @@ function SignUp() {
                 fullWidth
                 value={formData.password}
                 onChange={handleChange}
+                required
+              />
+            </MDBox>
+            <MDBox mb={2}>
+              <MDInput
+                type="password"
+                name="confirmPassword"
+                label="Confirm Password"
+                variant="standard"
+                fullWidth
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                required
               />
             </MDBox>
             <MDBox mt={4} mb={1}>
-              <MDButton variant="gradient" color="info" fullWidth type="submit">
+              <MDButton variant="gradient" color="success" fullWidth type="submit">
                 Sign up
               </MDButton>
             </MDBox>
@@ -98,7 +127,7 @@ function SignUp() {
                   component={Link}
                   to="/authentication/sign-in"
                   variant="button"
-                  color="info"
+                  color="success"
                   fontWeight="medium"
                   textGradient
                 >
@@ -109,6 +138,16 @@ function SignUp() {
           </MDBox>
         </MDBox>
       </Card>
+
+      <MDSnackbar
+        color={notification.color}
+        icon="notifications"
+        title="Authentication"
+        content={notification.message}
+        open={notification.open}
+        close={() => setNotification({ ...notification, open: false })}
+        autoHideDuration={3000}
+      />
     </BasicLayout>
   );
 }

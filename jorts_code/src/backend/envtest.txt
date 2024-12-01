@@ -1,0 +1,7 @@
+MONGODB_URI=mongodb+srv://jorts_admin:jorts123!@jorts-db.v51jc.mongodb.net/jorts-db?retryWrites=true&w=majority
+JWT_SECRET=jorts_secret_key_123456789
+PORT=3001
+NODE_ENV=development
+CLOUDINARY_CLOUD_NAME=dmsxb2wwr
+CLOUDINARY_API_KEY=518563811558846
+CLOUDINARY_API_SECRET=C0IBCuQ6uedwGYDmgWYnsAWzpBo

@@ -20,54 +20,18 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 
-// Mock data structure
-const mockOutfits = [
-  {
-    id: 1,
-    image: "/api/placeholder/400/500",
-    user: "fashion_enthusiast",
-    caption: "Summer vibes with a casual twist",
-    items: [
-      { brand: "Nike", item: "Air Max", link: "#" },
-      { brand: "Levi's", item: "501 Jeans", link: "#" },
-    ],
-    reactions: {
-      "👍": 24,
-      "🔥": 15,
-      "😐": 8,
-    },
-    votes: 150,
-  },
-  {
-    id: 2,
-    image: "/api/placeholder/400/500",
-    user: "style_master",
-    caption: "Business casual done right",
-    items: [
-      { brand: "Uniqlo", item: "Oxford Shirt", link: "#" },
-      { brand: "Zara", item: "Chinos", link: "#" },
-    ],
-    reactions: {
-      "👍": 18,
-      "🔥": 12,
-      "😐": 5,
-    },
-    votes: 120,
-  },
-];
-
 function Vote() {
-  // Original voting state
-  const [votes, setVotes] = useState({});
-  const [currentOutfitIndex, setCurrentOutfitIndex] = useState(0);
+  // Backend data state
+  const [currentPair, setCurrentPair] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [hasNext, setHasNext] = useState(true);
+  const [hasPrevious, setHasPrevious] = useState(false);
+
+  // UI state from original version
   const [hasVoted, setHasVoted] = useState(false);
-
-  // Comment system state
-  const [comments, setComments] = useState({});
-  const [newComment, setNewComment] = useState("");
-  const [replyTo, setReplyTo] = useState(null);
-
-  // UI state
   const [notification, setNotification] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState("");
   const [showOutfitDetails, setShowOutfitDetails] = useState(null);
@@ -76,100 +40,250 @@ function Vote() {
   const [menuAnchor, setMenuAnchor] = useState(null);
   const [selectedOutfit, setSelectedOutfit] = useState(null);
 
-  // Calculate vote percentages
-  const calculatePercentages = (outfitIndex) => {
-    const currentPair = `page_${outfitIndex}`;
-    if (!votes[currentPair]) return { outfit1: 50, outfit2: 50 };
+  // Comments state - enhanced for backend
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState("");
+  const [replyTo, setReplyTo] = useState(null);
 
-    const total = votes[currentPair].outfit1 + votes[currentPair].outfit2;
-    if (total === 0) return { outfit1: 50, outfit2: 50 };
+  useEffect(() => {
+    fetchPair();
+  }, []);
 
-    return {
-      outfit1: Math.round((votes[currentPair].outfit1 / total) * 100),
-      outfit2: Math.round((votes[currentPair].outfit2 / total) * 100),
-    };
+  // Fetch outfit pair from backend
+  const fetchPair = async (page = currentPage) => {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem("token");
+      const response = await fetch(`http://localhost:3001/api/votes/pairs?page=${page}`, {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : "",
+        },
+      });
+      const data = await response.json();
+      console.log("FETCH PAIR RESPONSE:", data);
+
+      if (response.ok) {
+        setCurrentPair(data.pair);
+        // Check if this pair has votes and set hasVoted accordingly
+        if (data.pair && (data.pair.post1Votes > 0 || data.pair.post2Votes > 0)) {
+          setHasVoted(true);
+        }
+        setCurrentPage(data.pagination.currentPage);
+        setTotalPages(data.pagination.totalPages);
+        setHasNext(data.pagination.hasNext);
+        setHasPrevious(data.pagination.hasPrevious);
+        setComments([]);
+      }
+    } catch (err) {
+      setError("Failed to fetch outfits");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // Navigation handlers
+  // Add navigation handlers
   const handlePreviousPage = () => {
-    if (currentOutfitIndex >= 2) {
-      setCurrentOutfitIndex(currentOutfitIndex - 2);
-      setHasVoted(false);
+    if (hasPrevious) {
+      fetchPair(currentPage - 1);
     }
   };
 
   const handleNextPage = () => {
-    if (currentOutfitIndex + 2 < mockOutfits.length) {
-      setCurrentOutfitIndex(currentOutfitIndex + 2);
-      setHasVoted(false);
+    if (hasNext) {
+      fetchPair(currentPage + 1);
     }
   };
 
-  const handleVote = (index) => {
-    if (!hasVoted) {
-      const currentPair = `page_${currentOutfitIndex}`;
-      const newVotes = { ...votes };
+  // Enhanced vote handler with backend integration
+  const handleVote = async (postId) => {
+    if (!currentPair || hasVoted) return;
 
-      if (!newVotes[currentPair]) {
-        newVotes[currentPair] = { outfit1: 0, outfit2: 0 };
-      }
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch("http://localhost:3001/api/votes/vote", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          pairId: currentPair._id,
+          postId,
+        }),
+      });
 
-      const outfitKey = index === 0 ? "outfit1" : "outfit2";
-      newVotes[currentPair][outfitKey] += 1;
+      const data = await response.json();
+      console.log("VOTE RESPONSE:", data);
 
-      setVotes(newVotes);
-      setHasVoted(true);
-      setNotificationMessage("Vote recorded!");
-      setNotification(true);
-    }
-  };
-
-  const handleReaction = (outfitId, reaction) => {
-    // In a real app, this would update the backend
-    setNotificationMessage(`Added ${reaction} reaction!`);
-    setNotification(true);
-  };
-
-  const handleComment = () => {
-    if (newComment.trim()) {
-      const outfitKey = `outfit_${currentOutfitIndex}`;
-      const newComments = { ...comments };
-      const commentObj = {
-        id: Date.now(),
-        text: newComment,
-        user: "current_user",
-        timestamp: new Date(),
-        replies: [],
-      };
-
-      if (!newComments[outfitKey]) {
-        newComments[outfitKey] = [];
-      }
-
-      if (replyTo) {
-        const parentComment = newComments[outfitKey].find((c) => c.id === replyTo);
-        if (parentComment) {
-          parentComment.replies.push(commentObj);
-        }
-        setReplyTo(null);
+      if (response.ok) {
+        setHasVoted(true);
+        setNotificationMessage(data.message);
+        setNotification(true);
+        // Update the entire pair data
+        setCurrentPair(data.pair);
       } else {
-        newComments[outfitKey].unshift(commentObj);
+        setNotificationMessage(data.message || "Failed to vote");
+        setNotification(true);
       }
-
-      setComments(newComments);
-      setNewComment("");
-      setNotificationMessage("Comment added successfully!");
+    } catch (err) {
+      console.error("Vote error:", err);
+      setNotificationMessage("Error submitting vote");
       setNotification(true);
     }
   };
 
-  const handleReport = () => {
-    setReportDialog(false);
-    setMenuAnchor(null);
-    setNotificationMessage("Report submitted successfully!");
-    setNotification(true);
-    setReportReason("");
+  // Enhanced comment handler with backend integration
+  const handleComment = async () => {
+    if (!newComment.trim() || !currentPair) return;
+
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        `http://localhost:3001/api/posts/${currentPair.post1._id}/comment`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            text: newComment,
+            replyTo: replyTo || null,
+          }),
+        }
+      );
+
+      const data = await response.json();
+      console.log("Comment response:", data);
+
+      if (response.ok) {
+        // Add the new comment to the comments array
+        if (replyTo) {
+          // Handle reply
+          setComments((prev) =>
+            prev.map((comment) =>
+              comment._id === replyTo
+                ? {
+                    ...comment,
+                    replies: [
+                      ...(comment.replies || []),
+                      {
+                        _id: data._id,
+                        text: data.text,
+                        userId: data.userId,
+                        timestamp: data.timestamp,
+                      },
+                    ],
+                  }
+                : comment
+            )
+          );
+          setReplyTo(null);
+        } else {
+          // Handle new comment
+          setComments((prev) => [
+            {
+              _id: data._id,
+              text: data.text,
+              userId: data.userId,
+              timestamp: data.timestamp,
+              replies: [],
+            },
+            ...prev,
+          ]);
+        }
+
+        setNewComment("");
+        setNotificationMessage("Comment posted successfully!");
+        setNotification(true);
+      } else {
+        setNotificationMessage(data.message || "Failed to post comment");
+        setNotification(true);
+      }
+    } catch (err) {
+      console.error("Comment error:", err);
+      setNotificationMessage("Error posting comment");
+      setNotification(true);
+    }
   };
+
+  const handleReaction = async (postId, reaction) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`http://localhost:3001/api/posts/${postId}/react`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ reaction }),
+      });
+
+      if (response.ok) {
+        setNotificationMessage(`Added ${reaction} reaction!`);
+        setNotification(true);
+      } else {
+        setNotificationMessage("Failed to add reaction");
+        setNotification(true);
+      }
+    } catch (err) {
+      setNotificationMessage("Error adding reaction");
+      setNotification(true);
+    }
+  };
+
+  const handleReport = async () => {
+    if (!reportReason.trim() || !selectedOutfit) return;
+
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`http://localhost:3001/api/posts/${selectedOutfit._id}/report`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ reason: reportReason }),
+      });
+
+      if (response.ok) {
+        setReportDialog(false);
+        setMenuAnchor(null);
+        setNotificationMessage("Report submitted successfully!");
+        setNotification(true);
+        setReportReason("");
+      } else {
+        setNotificationMessage("Failed to submit report");
+        setNotification(true);
+      }
+    } catch (err) {
+      setNotificationMessage("Error submitting report");
+      setNotification(true);
+    }
+  };
+
+  // Loading and error states
+  if (loading) {
+    return (
+      <DashboardLayout>
+        <MDBox display="flex" justifyContent="center" alignItems="center" minHeight="60vh">
+          <MDTypography variant="h4">Loading outfits...</MDTypography>
+        </MDBox>
+      </DashboardLayout>
+    );
+  }
+
+  if (error) {
+    return (
+      <DashboardLayout>
+        <MDBox display="flex" justifyContent="center" alignItems="center" minHeight="60vh">
+          <MDTypography variant="h4" color="error">
+            {error}
+          </MDTypography>
+        </MDBox>
+      </DashboardLayout>
+    );
+  }
 
   return (
     <DashboardLayout>
@@ -193,129 +307,178 @@ function Vote() {
               </MDBox>
 
               <MDBox p={3}>
-                <Grid container spacing={4}>
-                  {[0, 1].map((index) => {
-                    const outfit = mockOutfits[currentOutfitIndex + index];
-                    const percentages = calculatePercentages(currentOutfitIndex);
-                    const percentage = index === 0 ? percentages.outfit1 : percentages.outfit2;
-
-                    return (
-                      <Grid item xs={12} md={6} key={outfit?.id || index}>
-                        <MDBox
-                          position="relative"
-                          borderRadius="lg"
-                          shadow="md"
-                          overflow="hidden"
-                          minHeight="500px"
-                        >
-                          {/* Image */}
+                {currentPair && (
+                  <Grid container spacing={4}>
+                    {[currentPair.post1, currentPair.post2].map((post, index) => (
+                      <Grid item xs={12} md={6} key={post._id}>
+                        <MDBox borderRadius="lg" shadow="md">
+                          {/* Image Container */}
                           <MDBox
-                            component="img"
-                            src={outfit?.image}
-                            alt={`Outfit ${index + 1}`}
-                            width="100%"
-                            height="100%"
-                            position="absolute"
-                            top={0}
-                            left={0}
-                            sx={{ objectFit: "cover" }}
-                          />
-
-                          {/* Vote Percentage Overlay */}
-                          {hasVoted && (
-                            <MDBox
-                              position="absolute"
-                              top={0}
-                              left={0}
-                              right={0}
-                              height="4px"
-                              sx={{
-                                background: `linear-gradient(90deg, #1A73E8 ${percentage}%, transparent ${percentage}%)`,
-                                transition: "all 0.5s ease-in-out",
-                              }}
-                            />
-                          )}
-
-                          {/* Controls Overlay */}
-                          <MDBox
-                            position="absolute"
-                            bottom={0}
-                            left={0}
-                            right={0}
-                            p={2}
-                            sx={{
-                              background: "linear-gradient(transparent, rgba(0,0,0,0.8))",
-                              transition: "transform 0.3s",
-                            }}
+                            borderRadius="lg"
+                            overflow="hidden"
+                            position="relative"
+                            minHeight="500px"
                           >
-                            {/* User Info */}
-                            <MDTypography variant="subtitle2" color="white">
-                              {outfit?.user}
-                            </MDTypography>
+                            <MDBox
+                              component="img"
+                              src={post.image}
+                              alt={`Outfit ${index + 1}`}
+                              width="100%"
+                              height="100%"
+                              sx={{ objectFit: "cover" }}
+                            />
 
-                            {/* Actions */}
-                            <MDBox display="flex" justifyContent="space-between" mt={1}>
-                              {/* Reactions */}
+                            {/* Vote Percentage Bar - Now at top of image */}
+                            {hasVoted && (
+                              <MDBox
+                                position="absolute"
+                                top={0}
+                                left={0}
+                                right={0}
+                                height="8px"
+                                sx={{
+                                  background: `linear-gradient(90deg, #1A73E8 ${
+                                    ((index === 0
+                                      ? currentPair.post1Votes
+                                      : currentPair.post2Votes) /
+                                      (currentPair.post1Votes + currentPair.post2Votes)) *
+                                    100
+                                  }%, transparent ${
+                                    ((index === 0
+                                      ? currentPair.post1Votes
+                                      : currentPair.post2Votes) /
+                                      (currentPair.post1Votes + currentPair.post2Votes)) *
+                                    100
+                                  }%)`,
+                                  transition: "all 0.5s ease-in-out",
+                                }}
+                              />
+                            )}
+                          </MDBox>
+
+                          {/* Content Below Image */}
+                          <MDBox p={3} bgcolor="white" borderRadius="lg">
+                            {/* User Info and Vote Count */}
+                            <MDBox
+                              display="flex"
+                              justifyContent="space-between"
+                              alignItems="center"
+                              mb={2}
+                            >
                               <MDBox>
-                                {outfit?.reactions &&
-                                  Object.entries(outfit.reactions).map(([reaction, count]) => (
-                                    <MDButton
-                                      key={reaction}
-                                      variant="text"
-                                      color="white"
-                                      onClick={() => handleReaction(outfit.id, reaction)}
-                                      sx={{ minWidth: "auto", p: 1 }}
-                                    >
-                                      {reaction} {count}
-                                    </MDButton>
-                                  ))}
-                              </MDBox>
-
-                              {/* Info & Menu */}
-                              <MDBox>
-                                <MDButton
-                                  variant="text"
-                                  color="white"
-                                  onClick={() => setShowOutfitDetails(outfit)}
-                                >
-                                  <Icon>info</Icon>
-                                </MDButton>
-                                <MDButton
-                                  variant="text"
-                                  color="white"
-                                  onClick={(e) => {
-                                    setMenuAnchor(e.currentTarget);
-                                    setSelectedOutfit(outfit);
-                                  }}
-                                >
-                                  <Icon>more_vert</Icon>
-                                </MDButton>
-                              </MDBox>
-                            </MDBox>
-
-                            {/* Vote Button and Percentage */}
-                            <MDBox display="flex" alignItems="center" mt={1}>
-                              <MDButton
-                                variant="contained"
-                                color="info"
-                                fullWidth
-                                onClick={() => handleVote(index)}
-                                disabled={hasVoted}
-                              >
-                                Vote for this outfit
-                              </MDButton>
-                              {hasVoted && (
-                                <MDTypography variant="h6" color="white" ml={1}>
-                                  {percentage}%
+                                <MDTypography variant="h6" fontWeight="medium">
+                                  {post.userId.username}
                                 </MDTypography>
-                              )}
+                                {hasVoted && (
+                                  <MDTypography variant="body2" color="text">
+                                    Votes:{" "}
+                                    {index === 0 ? currentPair.post1Votes : currentPair.post2Votes}{" "}
+                                    (
+                                    {Math.round(
+                                      ((index === 0
+                                        ? currentPair.post1Votes
+                                        : currentPair.post2Votes) /
+                                        (currentPair.post1Votes + currentPair.post2Votes)) *
+                                        100
+                                    )}
+                                    %)
+                                  </MDTypography>
+                                )}
+                              </MDBox>
+                              <MDButton
+                                variant="text"
+                                color="info"
+                                onClick={(e) => {
+                                  setMenuAnchor(e.currentTarget);
+                                  setSelectedOutfit(post);
+                                }}
+                              >
+                                <Icon>more_vert</Icon>
+                              </MDButton>
                             </MDBox>
+
+                            {/* Outfit Details */}
+                            {post.caption && (
+                              <MDBox mb={2}>
+                                <MDTypography variant="body2" color="text">
+                                  {post.caption}
+                                </MDTypography>
+                              </MDBox>
+                            )}
+
+                            {/* Items List */}
+                            {post.items && post.items.length > 0 && (
+                              <MDBox mb={2}>
+                                <MDTypography variant="subtitle2" fontWeight="medium" mb={1}>
+                                  Items
+                                </MDTypography>
+                                {post.items.map((item, itemIndex) => (
+                                  <MDBox
+                                    key={itemIndex}
+                                    display="flex"
+                                    justifyContent="space-between"
+                                    mb={0.5}
+                                  >
+                                    <MDTypography variant="body2" color="text">
+                                      {item.brand} - {item.item}
+                                    </MDTypography>
+                                    {item.link && (
+                                      <MDButton
+                                        variant="text"
+                                        size="small"
+                                        component="a"
+                                        href={item.link}
+                                        target="_blank"
+                                      >
+                                        Shop
+                                      </MDButton>
+                                    )}
+                                  </MDBox>
+                                ))}
+                              </MDBox>
+                            )}
+
+                            {/* Reactions */}
+                            <MDBox display="flex" gap={1} mb={2}>
+                              {post.reactions &&
+                                Object.entries(post.reactions).map(([reaction, count]) => (
+                                  <MDButton
+                                    key={reaction}
+                                    variant="outlined"
+                                    color="info"
+                                    size="small"
+                                    onClick={() => handleReaction(post._id, reaction)}
+                                  >
+                                    {reaction} {count}
+                                  </MDButton>
+                                ))}
+                            </MDBox>
+
+                            {/* Vote Button */}
+                            <MDButton
+                              variant="gradient"
+                              color="info"
+                              fullWidth
+                              onClick={() => handleVote(post._id)}
+                              disabled={hasVoted}
+                              sx={{ mt: 1 }}
+                            >
+                              {hasVoted
+                                ? `${Math.round(
+                                    ((index === 0
+                                      ? currentPair.post1Votes
+                                      : currentPair.post2Votes) /
+                                      (currentPair.post1Votes + currentPair.post2Votes)) *
+                                      100
+                                  )}% of votes`
+                                : "Vote for this outfit"}
+                            </MDButton>
                           </MDBox>
                         </MDBox>
                       </Grid>
-                    );
-                  })}
-                </Grid>
+                    ))}
+                  </Grid>
+                )}
 
                 {/* Navigation Buttons */}
                 <MDBox mt={4} display="flex" justifyContent="space-between">
@@ -323,17 +486,20 @@ function Vote() {
                     variant="outlined"
                     color="info"
                     onClick={handlePreviousPage}
-                    disabled={currentOutfitIndex === 0}
+                    disabled={!hasPrevious}
                   >
-                    <Icon>arrow_back</Icon>&nbsp;Previous
+                    <Icon>arrow_back</Icon>&nbsp;Previous Page
                   </MDButton>
+                  <MDTypography variant="h6" color="text">
+                    Page {currentPage} of {totalPages}
+                  </MDTypography>
                   <MDButton
                     variant="outlined"
                     color="info"
                     onClick={handleNextPage}
-                    disabled={currentOutfitIndex + 2 >= mockOutfits.length}
+                    disabled={!hasNext}
                   >
-                    Next&nbsp;<Icon>arrow_forward</Icon>
+                    Next Page&nbsp;<Icon>arrow_forward</Icon>
                   </MDButton>
                 </MDBox>
 
@@ -369,16 +535,20 @@ function Vote() {
                   </MDBox>
 
                   <MDBox>
-                    {(comments[`outfit_${currentOutfitIndex}`] || []).map((comment) => (
-                      <MDBox key={comment.id} mb={2}>
+                    {comments.map((comment) => (
+                      <MDBox key={comment._id} mb={2}>
                         <MDBox p={2} borderRadius="lg" sx={{ backgroundColor: "grey.100" }}>
-                          <MDTypography variant="subtitle2">{comment.user}</MDTypography>
-                          <MDTypography variant="body2">{comment.text}</MDTypography>
+                          <MDTypography variant="subtitle2">
+                            {comment.userId?.username || "Unknown User"}
+                          </MDTypography>
+                          <MDTypography variant="body2" mt={1}>
+                            {comment.text}
+                          </MDTypography>
                           <MDBox display="flex" justifyContent="flex-end" mt={1}>
                             <MDButton
                               variant="text"
                               color="info"
-                              onClick={() => setReplyTo(comment.id)}
+                              onClick={() => setReplyTo(comment._id)}
                             >
                               Reply
                             </MDButton>
@@ -388,15 +558,19 @@ function Vote() {
                         {/* Replies */}
                         {comment.replies?.map((reply) => (
                           <MDBox
-                            key={reply.id}
+                            key={reply._id}
                             ml={4}
                             mt={1}
                             p={2}
                             borderRadius="lg"
                             sx={{ backgroundColor: "grey.50" }}
                           >
-                            <MDTypography variant="subtitle2">{reply.user}</MDTypography>
-                            <MDTypography variant="body2">{reply.text}</MDTypography>
+                            <MDTypography variant="subtitle2">
+                              {reply.userId?.username || "Unknown User"}
+                            </MDTypography>
+                            <MDTypography variant="body2" mt={1}>
+                              {reply.text}
+                            </MDTypography>
                           </MDBox>
                         ))}
                       </MDBox>
@@ -425,7 +599,7 @@ function Vote() {
           <MDTypography variant="h6" mt={2} mb={1}>
             Items
           </MDTypography>
-          {showOutfitDetails?.items.map((item, index) => (
+          {showOutfitDetails?.items?.map((item, index) => (
             <MDBox key={index} mb={1}>
               <MDTypography variant="body2">
                 {item.brand} - {item.item}

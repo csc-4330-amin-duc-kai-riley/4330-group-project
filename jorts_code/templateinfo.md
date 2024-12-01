@@ -103,77 +103,121 @@ The documentation for the Material Dashboard is hosted at our [website](https://
 Within the download you'll find the following directories and files:
 
 ```
-material-dashboard-react
-    ├── public
-    │   ├── apple-icon.png
-    │   ├── favicon.png
-    │   ├── index.html
-    │   ├── manifest.json
-    │   └── robots.txt
-    ├── src
-    │   ├── assets
-    │   │   ├── images
-    │   │   └── theme
-    │   │       ├── base
-    │   │       ├── components
-    │   │       ├── functions
-    │   │       ├── index.js
-    │   │       └── theme-rtl.js
-    │   │   └── theme-dark
-    │   │       ├── base
-    │   │       ├── components
-    │   │       ├── functions
-    │   │       ├── index.js
-    │   │       └── theme-rtl.js
-    │   ├── components
-    │   │   ├── MDAlert
-    │   │   ├── MDAvatar
-    │   │   ├── MDBadge
-    │   │   ├── MDBox
-    │   │   ├── MDButton
-    │   │   ├── MDInput
-    │   │   ├── MDPagination
-    │   │   ├── MDProgress
-    │   │   ├── MDSnackbar
-    │   │   └── MDTypography
-    │   ├── context
-    │   ├── examples
-    │   │   ├── Breadcrumbs
-    │   │   ├── Cards
-    │   │   ├── Charts
-    │   │   ├── Configurator
-    │   │   ├── Footer
-    │   │   ├── Items
-    │   │   ├── LayoutContainers
-    │   │   ├── Lists
-    │   │   ├── Navbars
-    │   │   ├── Sidenav
-    │   │   ├── Tables
-    │   │   └── Timeline
-    │   ├── layouts
-    │   │   ├── jorts
-    │   │       ├── about
-    │   │       │   ├── index.js
-    │   │       ├── authentication
-    │   │           ├── index.js
-    │   │       ├── upload
-    │   │           ├── index.js
-    │   │       ├── vote
-    │   │           ├── index.js
-    │   │           ├── profile
-    │   │           ├── index.js
-    │   │  
-    │   ├── App.js
-    │   ├── index.js
-    │   └── routes.js
-    ├── .eslintrc.json
-    ├── .prettierrc.json
-    ├── CHANGELOG.md
-    ├── ISSUE_TEMPLATE.md
-    ├── jsconfig.json
-    ├── LICENSE.md
-    ├── package.json
-    └── README.md
+Folder Structure
+
+material-dashboard-react 
+    JORTS_CODE
+├── .vscode
+├── current page images
+├── node_modules
+├── public
+│   ├── apple-icon.png
+│   ├── favicon.png
+│   ├── index.html
+│   ├── manifest.json
+│   └── robots.txt
+├── src
+│   ├── assets
+│   │   ├── images
+│   │   └── theme
+│   │       ├── base
+│   │       ├── components
+│   │       ├── functions
+│   │       ├── index.js
+│   │       └── theme-rtl.js
+│   │   └── theme-dark
+│   │       ├── base
+│   │       ├── components
+│   │       ├── functions
+│   │       ├── index.js
+│   │       └── theme-rtl.js
+│   ├── backend
+│   │   ├── config
+│   │   │   └── db.js
+│   │   ├── middleware
+│   │   │   ├── auth.js
+│   │   │   ├── error.js
+│   │   │   └── upload.js
+│   │   ├── models
+│   │   │   ├── Post.js
+│   │   │   ├── PostPair.js
+│   │   │   ├── User.js
+│   │   │   └── Vote.js
+│   │   ├── routes
+│   │   │   ├── auth.js
+│   │   │   ├── posts.js
+│   │   │   ├── profile.js
+│   │   │   ├── votes.js
+│   │   │   └── votes.test.js
+│   │   ├── scripts
+│   │   │   ├── create-final-test-user.js
+│   │   │   ├── create-test-user-with-password.js
+│   │   │   ├── create-test-user.js
+│   │   │   ├── seedData.js
+│   │   │   └── verify-test-user.js
+│   │   ├── utils
+│   │   │   └── helpers.js
+│   │   ├── context
+│   │   │   ├── AuthContext.js
+│   │   │   └── index.js
+│   │   ├── .env
+│   │   ├── package-lock.json
+│   │   ├── package.json
+│   │   ├── riley_database.js
+│   │   └── server.js
+│   ├── components
+│   │   ├── MDAlert
+│   │   ├── MDAvatar
+│   │   ├── MDBadge
+│   │   ├── MDBox
+│   │   ├── MDButton
+│   │   ├── MDInput
+│   │   ├── MDPagination
+│   │   ├── MDProgress
+│   │   ├── MDSnackbar
+│   │   └── MDTypography
+│   ├── context
+│   │   ├── AuthContext.js
+│   │   └── index.js
+│   ├── examples
+│   │   ├── Breadcrumbs
+│   │   ├── Cards
+│   │   ├── Charts
+│   │   ├── Configurator
+│   │   ├── Footer
+│   │   ├── Items
+│   │   ├── LayoutContainers
+│   │   ├── Lists
+│   │   ├── Navbars
+│   │   ├── Sidenav
+│   │   ├── Tables
+│   │   └── Timeline
+│   ├── frontend
+│   │   ├── about
+│   │   │   └── index.js
+│   │   ├── authentication
+│   │   │   ├── sign-up
+│   │   │   │   └── index.js
+│   │   │   └── sign-in
+│   │   │       └── index.js
+│   │   ├── upload
+│   │   │   └── index.js
+│   │   ├── vote
+│   │   │   └── index.js
+│   │   └── profile
+│   │       └── index.js
+│   ├── App.js
+│   ├── index.js
+│   └── routes.js
+├── .eslintrc.json
+├── .prettierrc.json
+├── CHANGELOG.md
+├── ISSUE_TEMPLATE.md
+├── jsconfig.json
+├── LICENSE.md
+├── package.json
+└── README.md
+
 ```
 
 ## Browser Support

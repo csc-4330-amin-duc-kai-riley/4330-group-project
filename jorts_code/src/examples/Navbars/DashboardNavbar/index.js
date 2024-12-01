@@ -1,18 +1,20 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Icon from "@mui/material/Icon";
 import MDBox from "components/MDBox";
+import MDButton from "components/MDButton";
+import MDTypography from "components/MDTypography";
 import Breadcrumbs from "examples/Breadcrumbs";
+import { useAuth } from "context/AuthContext";
 import {
   navbar,
   navbarContainer,
   navbarRow,
   navbarIconButton,
-  navbarMobileMenu,
 } from "examples/Navbars/DashboardNavbar/styles";
 import {
   useMaterialUIController,
@@ -26,6 +28,8 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const [controller, dispatch] = useMaterialUIController();
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator, darkMode } = controller;
   const route = useLocation().pathname.split("/").slice(1);
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (fixedNavbar) {
@@ -46,17 +50,10 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const handleMiniSidenav = () => setMiniSidenav(dispatch, !miniSidenav);
   const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
 
-  const iconsStyle = ({ palette: { dark, white, text }, functions: { rgba } }) => ({
-    color: () => {
-      let colorValue = light || darkMode ? white.main : dark.main;
-
-      if (transparentNavbar && !light) {
-        colorValue = darkMode ? rgba(text.main, 0.6) : text.main;
-      }
-
-      return colorValue;
-    },
-  });
+  const handleSignOut = () => {
+    logout();
+    navigate("/landing");
+  };
 
   return (
     <AppBar
@@ -69,18 +66,15 @@ function DashboardNavbar({ absolute, light, isMini }) {
           <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
         </MDBox>
         {isMini ? null : (
-          <MDBox sx={(theme) => navbarRow(theme, { isMini })}>
-            <MDBox color={light ? "white" : "inherit"}>
-              <IconButton
-                size="small"
-                disableRipple
-                color="inherit"
-                sx={navbarIconButton}
-                onClick={handleConfiguratorOpen}
-              >
-                <Icon sx={iconsStyle}>settings</Icon>
-              </IconButton>
-            </MDBox>
+          <MDBox sx={(theme) => navbarRow(theme, { isMini })} display="flex" alignItems="center">
+            {user && (
+              <MDTypography variant="button" fontWeight="regular" color="text" mr={2}>
+                Welcome, {user.username}!
+              </MDTypography>
+            )}
+            <MDButton variant="gradient" color="error" size="small" onClick={handleSignOut}>
+              <Icon>logout</Icon>&nbsp; Sign Out
+            </MDButton>
           </MDBox>
         )}
       </Toolbar>

@@ -67,7 +67,7 @@ const seedDatabase = async () => {
     // Clear existing data
     await User.deleteMany({});
     await Post.deleteMany({});
-    await PostPair.deleteMany({}); // Add this line to clear existing pairs
+    await PostPair.deleteMany({}); 
     console.log('Cleared existing data');
 
     // Create users

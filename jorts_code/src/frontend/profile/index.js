@@ -9,19 +9,19 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
 const mockUserData = {
-  username: "fashion_enthusiast",
-  joinDate: "October 2023",
-  totalPosts: 45,
-  followers: 128,
-  following: 97,
-  bio: "Fashion lover | Style explorer | Daily outfit inspiration",
-  profilePicture: "/api/placeholder/150/150",
+  username: "testuser",
+  joinDate: "December 2024",
+  totalPosts: 1,
+  followers: 0,
+  following: 0,
+  bio: "Chill Guy",
+  profilePicture: "/demo-images/profile.jpg",
 };
 
-const mockPosts = Array(6).fill({
-  image: "/api/placeholder/300/400",
-  likes: 24,
-  comments: 8,
+const mockPosts = Array(1).fill({
+  image: "/demo-images/myoutfit.jpg",
+  likes: 0,
+  comments: 0,
   date: "2023-11-01",
 });
 
@@ -185,15 +185,15 @@ function Profile() {
                         <MDTypography variant="h6">Engagement Stats</MDTypography>
                         <MDBox mt={2}>
                           <MDTypography variant="button" color="text">
-                            Average Likes: 22
+                            Average Likes: 0
                           </MDTypography>
                           <br />
                           <MDTypography variant="button" color="text">
-                            Most Popular Post: 156 likes
+                            Most Popular Post: 0 likes
                           </MDTypography>
                           <br />
                           <MDTypography variant="button" color="text">
-                            Total Comments: 342
+                            Total Comments: 0
                           </MDTypography>
                         </MDBox>
                       </MDBox>
@@ -203,15 +203,15 @@ function Profile() {
                         <MDTypography variant="h6">Activity Overview</MDTypography>
                         <MDBox mt={2}>
                           <MDTypography variant="button" color="text">
-                            Posting Streak: 7 days
+                            Posting Streak: 0 days
                           </MDTypography>
                           <br />
                           <MDTypography variant="button" color="text">
-                            Last Post: 2 hours ago
+                            Last Post: 0 hours ago
                           </MDTypography>
                           <br />
                           <MDTypography variant="button" color="text">
-                            Vote Participation: 89%
+                            Vote Participation: 0%
                           </MDTypography>
                         </MDBox>
                       </MDBox>

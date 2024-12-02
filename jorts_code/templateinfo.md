@@ -111,7 +111,7 @@ material-dashboard-react
 ├── current page images
 ├── node_modules
 ├── public
-│   ├── apple-icon.png
+│   ├── demo-images
 │   ├── favicon.png
 │   ├── index.html
 │   ├── manifest.json

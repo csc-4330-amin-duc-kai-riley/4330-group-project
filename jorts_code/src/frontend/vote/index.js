@@ -317,7 +317,8 @@ function Vote() {
                             borderRadius="lg"
                             overflow="hidden"
                             position="relative"
-                            minHeight="500px"
+                            minHeight="300px" // Reduced from 500px
+                            maxHeight="400px" // Added maximum height
                           >
                             <MDBox
                               component="img"
@@ -325,7 +326,10 @@ function Vote() {
                               alt={`Outfit ${index + 1}`}
                               width="100%"
                               height="100%"
-                              sx={{ objectFit: "cover" }}
+                              sx={{
+                                objectFit: "contain", // Changed from "cover" to maintain aspect ratio
+                                maxHeight: "400px", // Match the container max height
+                              }}
                             />
 
                             {/* Vote Percentage Bar - Now at top of image */}

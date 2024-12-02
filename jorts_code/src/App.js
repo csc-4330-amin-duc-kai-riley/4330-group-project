@@ -100,9 +100,7 @@ function AppContent() {
 
   // Filter routes based on authentication status
   const visibleRoutes = isAuthenticated
-    ? routes
-        .filter((route) => !route.showOnlyBeforeLogin && route.type !== "hidden")
-        .concat([signOutRoute])
+    ? routes.filter((route) => !route.showOnlyBeforeLogin && route.type !== "hidden")
     : routes.filter((route) => route.showOnlyBeforeLogin || route.type === "hidden");
 
   const configsButton = (
